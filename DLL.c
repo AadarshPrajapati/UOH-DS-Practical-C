@@ -76,6 +76,51 @@ void insertion_last()
      printf("\nnode inserted\n");  
     }  
 
+void insert_in_middle(){
+    struct node *ptr,*temp;
+    int item;
+    ptr = (struct node *)malloc(sizeof(struct node));
+    if(ptr == NULL)
+    {
+        printf("\nOVERFLOW");
+    }
+    else
+    {
+        printf("\nEnter Item value");
+}
+    scanf("%d",&item);
+    ptr->data=item;
+    if(head == NULL)
+    {
+        ptr->next = NULL;
+        ptr->prev = NULL;
+        head = ptr;
+    }
+    else
+    {
+        temp = head;
+        int len=0;
+        while(temp->next!=NULL)
+        {
+            len++;
+            temp=temp->next;
+        }
+
+        len=len/2;
+        temp=head;
+        while(len>0)
+        {
+            temp=temp->next;
+            len--;
+        }
+        ptr->next=temp->next;
+        ptr->prev=temp;
+        temp->next->prev=ptr;
+        temp->next=ptr;
+    }
+    printf("\nNode inserted\n");
+}
+
 void deletion_beginning()  
 {  
     struct node *ptr;  
@@ -98,7 +143,44 @@ void deletion_beginning()
         printf("\nnode deleted\n");  
     }  
   
-}  
+}
+
+void delete_in_middle(){
+    struct node *ptr,*temp;
+    if(head == NULL)
+    {
+        printf("\n UNDERFLOW");
+    }
+    else if(head->next == NULL)
+    {
+        head = NULL;
+        free(head);
+        printf("\nnode deleted\n");
+    }
+    else
+    {
+        temp = head;
+        int len=0;
+        while(temp->next!=NULL)
+        {
+            len++;
+            temp=temp->next;
+        }
+
+        len=len/2;
+        temp=head;
+        while(len>0)
+        {
+            temp=temp->next;
+            len--;
+        }
+        ptr=temp->next;
+        temp->next=ptr->next;
+        ptr->next->prev=temp;
+        free(ptr);
+        printf("\nnode deleted\n");
+    }
+}
 
 void display()  
 {  
@@ -151,7 +233,7 @@ void main()
 int choice =0;  
     while(choice != 9)  
     {  
-        printf("\n1.Insert in begining\n2.Insert at last\n3.Delete from Beginning\n4.Search\n5.Show\n6.Exit\n");  
+        printf("\n1.Insert in begining\n2.Insert at last\n3.Delete from Beginning\n4.Search\n5.Show\n6.insert in middle\n7.delete at middle\n8.Exit\n");  
         printf("\nEnter your choice?\n");  
         scanf("\n%d",&choice);  
         switch(choice)  
@@ -172,8 +254,14 @@ int choice =0;
                 display();  
             break;  
             case 6:  
-                exit(0);  
-            break;  
+                insert_in_middle();  
+            break;
+            case 7:
+                delete_in_middle();
+            break;
+            case 8:
+                exit(0);
+            break;
         }  
     }  
 }  
